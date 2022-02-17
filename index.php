@@ -1,5 +1,10 @@
 <?php require_once 'inc/header.php';
 
+if (isset($_GET['unset'])) :
+    unset($_SESSION['user']);
+header('location:./');
+endif;
+
 
 $resultat = executeRequete("SELECT * FROM product");
 
