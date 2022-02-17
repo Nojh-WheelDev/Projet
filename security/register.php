@@ -1,27 +1,69 @@
 <?php
 require_once '../inc/header.php';
 
+if (!empty($_POST)) :
 
-if (!empty($_POST)):
-    $mdp=password_hash($_POST ['password'], PASSWORD_DEFAULT);
-
-    executeRequete("INSERT INTO user (nickname, email, password) VALUES (:nickname, :email, :password)", array(
-        ':nickname'=>$_POST['nickname'],
-        ':email'=>$_POST['email'],
-        ':password'=>$mdp
-
-
+    $resultat = executeRequete("SELECT * FROM user WHERE email=:email", array(
+        ':email' => $_POST['email']
     ));
 
-    $_SESSION['messages']['success'][]="Félicitation, vous êtes à présent inscrit";
+    if ($resultat->rowCount() !== 0) :
+        $_SESSION['messages']['danger'][] = "Un compte est déjà existant à cette adresse mail";
 
-    header('location:./login.php');
-exit();
+        header('location:./register.php');
+        exit();
+    endif;
+
+    if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) :
+        $_SESSION['messages']['danger'][] = "email invalide";
+
+        header('location:./register.php');
+        exit();
+    endif;
+
+    if (!preg_match("/^(?=.*\d)(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[a-z])(?=.*[ !#$%&'\(\) * +,-.\/[\\] ^ _`{|}~\"])[0-9A-Za-z !#$%&'\(\) * +,-.\/[\\] ^ _`{|}~\"]{8,50}$/
+    ", ($_POST['password']))) :
+
+        $_SESSION['messages']['danger'][] = "Votre mot de passe doit contenir au minimum 8 caractères, maximum 50 caractères,majuscule, minuscule et un caractère spécial ! # @ % & * + -";
+        header('location:./register.php');
+        exit();
+
+    endif;
+
+
+
+
+    if ($_POST['password'] == $_POST['confirmPassword']) :
+
+        $mdp = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        executeRequete("INSERT INTO user (nickname, email, password, roles) VALUES (:nickname, :email, :password, :roles)", array(
+            ':nickname' => $_POST['nickname'],
+            ':email' => $_POST['email'],
+            ':password' => $mdp,
+            ':roles' => 'ROLE_USER'
+
+        ));
+
+        $_SESSION['messages']['success'][] = "Félicitation, vous êtes à présent inscrit";
+
+        header('location:./login.php');
+        exit();
+
+    else :
+
+        $_SESSION['messages']['danger'][] = "Les mots de passe ne correspondent pas";
+
+        header('location:./register.php');
+        exit();
+
+    endif;
+
+
 endif;
 
 
 ?>
-
 
 
 <form method="post" action="">
@@ -35,19 +77,18 @@ endif;
                             <div class="card-body p-5">
                                 <h2 class="text-uppercase text-center mb-5">Inscription</h2>
 
-                                <label for="inputPassword" class="mt-3">Pseudo</label>
-                                <input type="text" name="nickname" id="inputPassword" class="form-control" autocomplete="current-password" required>
                                 <label for="inputEmail">Email</label>
-                                <input type="email" value="" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                                <input type="text" value="" name="email" id="inputEmail" class="form-control" autocomplete="email">
                                 <label for="inputPassword" class="mt-3">Mot de passe</label>
-                                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password">
                                 <label for="inputPassword" class="mt-3">Confirmation de mot de passe</label>
-                                <input type="password" name="confirmPassword" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
+                                <input type="password" name="confirmPassword" id="inputPassword" class="form-control" autocomplete="current-password">
+                                <label for="inputPassword" class="mt-3">Pseudo</label>
+                                <input type="text" name="nickname" id="inputPassword" class="form-control" autocomplete="current-password">
 
 
                                 <button class="btn mb-2 mt-3 mb-md-0 btn-outline-secondary btn-block" type="submit">
-                                    S'inscrire
+                                    Valider
                                 </button>
                             </div>
                         </div>
@@ -58,11 +99,6 @@ endif;
 
     </section>
 </form>
-
-
-
-
-
 
 
 <?php require_once '../inc/footer.php' ?>
