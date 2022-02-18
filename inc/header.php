@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Projet e-commerce</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/lux/bootstrap.min.css" integrity="sha512-B5sIrmt97CGoPUHgazLWO0fKVVbtXgGIOayWsbp9Z5aq4DJVATpOftE/sTTL27cu+QOqpI/jpt6tldZ4SwFDZw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -38,7 +39,16 @@
                         <a class="nav-link" href="#">Pricing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="<?= SITE . './front/fullCart.php' ?>">
+                            <i<button type="button" class="rounded btn btn-primary position-relative p-2">
+                                <i class="fa-solid fa-cart-arrow-down fa-2xl "></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <?= getQuantity(); ?>
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                                </button>
+                                ></i>
+                        </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -63,7 +73,8 @@
                     </div>
                 <?php else : ?>
                     <div class="text-center ">
-                        <a href="<?= SITE . '?unset=1'; ?>" class="btn btn-primary mt-1">Se déconnecter</a>
+                        <a href="<?= SITE . '?unset=1'; ?>" class="btn btn-primary mt-1"><i class="fa-solid fa-power-off"></i>
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>

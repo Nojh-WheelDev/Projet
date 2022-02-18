@@ -53,3 +53,49 @@ function destroy()
 {
     unset($_SESSION['cart']);
 }
+
+function getFullCart()
+{
+    $panier = $_SESSION['cart'];
+    
+    $panierDetail=[];
+
+    foreach ($panier as $id=>$quantity):
+        $resultat=executeRequete("SELECT * FROM product WHERE id=:id", array(
+            ':id'=>$id
+        ));
+        $product=$resultat->fetch(PDO::FETCH_ASSOC);
+        $panierDetail[]=[
+            'product'=>$product,
+            'quantity'=>$quantity,
+            'total'=>$product['price']*$quantity
+        ];
+    endforeach;
+    return $panierDetail;
+}
+
+function getTotal()
+{
+    $total=0;
+    foreach (getFullCart()as $item):
+
+        $total+=$item['total'];
+
+    endforeach;
+
+    return $total;
+
+}
+
+function getQuantity()
+{
+    $total=0;
+    foreach (getFullCart()as $item):
+
+        $total+=$item['quantity'];
+
+    endforeach;
+
+    return $total;
+
+}
