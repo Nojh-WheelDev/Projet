@@ -7,12 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Projet e-commerce</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/lux/bootstrap.min.css" integrity="sha512-B5sIrmt97CGoPUHgazLWO0fKVVbtXgGIOayWsbp9Z5aq4DJVATpOftE/sTTL27cu+QOqpI/jpt6tldZ4SwFDZw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
-    <?php require_once 'init.php'; ?>
+    <?php require_once 'init.php';
+
+    ?>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
         <div class="container-fluid">
@@ -34,22 +36,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?= SITE . 'admin/ajoutProduit.php'; ?>">Ajout produit</a>
                         </li>
-                    <?php endif;   ?>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pricing</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= SITE . './front/fullCart.php' ?>">
-                            <i<button type="button" class="rounded btn btn-primary position-relative p-2">
-                                <i class="fa-solid fa-cart-arrow-down fa-2xl "></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    <?= getQuantity(); ?>
-                                    <span class="visually-hidden">unread messages</span>
-                                </span>
-                                </button>
-                                ></i>
-                        </a>
-                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                         <div class="dropdown-menu">
@@ -60,6 +51,17 @@
                             <a class="dropdown-item" href="#">Separated link</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="<?= SITE . 'front/fullCart.php'; ?>">
+                            <button type="button" class="rounded btn btn-outline-warning position-relative p-2 ">
+                                <i class="fa-solid fa-cart-arrow-down fa-2xl "></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                                    <?= getQuantity(); ?>+
+
+                                </span>
+                            </button>
+                        </a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search">
@@ -69,12 +71,11 @@
                 ?>
                     <div class="text-center ">
                         <a href="<?= SITE . 'security/login.php'; ?>" class="btn btn-success">Se connecter</a>
-                        <a href="<?= SITE . 'security/register.php'; ?>" class="btn btn-primary mt-1">S'inscrire</a>
+                        <a href="<?= SITE . 'security/register.php'; ?>" class="btn btn-primary ">S'inscrire</a>
                     </div>
                 <?php else : ?>
                     <div class="text-center ">
-                        <a href="<?= SITE . '?unset=1'; ?>" class="btn btn-primary mt-1"><i class="fa-solid fa-power-off"></i>
-                        </a>
+                        <a href="<?= SITE . '?unset=1'; ?>" class="btn btn-primary mt-1"><i class="fa-solid fa-power-off"></i></a>
                     </div>
                 <?php endif; ?>
             </div>

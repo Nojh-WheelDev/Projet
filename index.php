@@ -52,6 +52,7 @@ endif;
 
 <div class="row justify-content-between">
     <?php foreach ($products as $product) :
+
         $quant = 0;
         foreach ($_SESSION['cart'] as $id => $quantity) :
             if ($product['id'] == $id) :

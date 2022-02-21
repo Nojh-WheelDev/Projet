@@ -30,6 +30,7 @@ function remove(int $id)
         $panier[$id]--;
     else :
         unset($panier[$id]);
+    //$panier[$id]=0;
     endif;
     $_SESSION['cart'] = $panier;
 }
@@ -57,45 +58,46 @@ function destroy()
 function getFullCart()
 {
     $panier = $_SESSION['cart'];
-    
-    $panierDetail=[];
 
-    foreach ($panier as $id=>$quantity):
-        $resultat=executeRequete("SELECT * FROM product WHERE id=:id", array(
-            ':id'=>$id
+    $panierDetail = [];
+
+    foreach ($panier as $id => $quantity) :
+        $resultat = executeRequete("SELECT * FROM product WHERE id=:id", array(
+            ':id' => $id
         ));
-        $product=$resultat->fetch(PDO::FETCH_ASSOC);
-        $panierDetail[]=[
-            'product'=>$product,
-            'quantity'=>$quantity,
-            'total'=>$product['price']*$quantity
+        $product = $resultat->fetch(PDO::FETCH_ASSOC);
+        $panierDetail[] = [
+            'product' => $product,
+            'quantity' => $quantity,
+            'total' => $product['price'] * $quantity
+
         ];
+
     endforeach;
+
     return $panierDetail;
 }
 
 function getTotal()
 {
-    $total=0;
-    foreach (getFullCart()as $item):
+    $total = 0;
+    foreach (getFullCart() as $item) :
 
-        $total+=$item['total'];
+        $total += $item['total'];
 
     endforeach;
 
     return $total;
-
 }
 
 function getQuantity()
 {
-    $total=0;
-    foreach (getFullCart()as $item):
+    $total = 0;
+    foreach (getFullCart() as $item) :
 
-        $total+=$item['quantity'];
+        $total += $item['quantity'];
 
     endforeach;
 
     return $total;
-
 }
